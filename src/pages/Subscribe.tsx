@@ -3,14 +3,7 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Logo } from "../components/Logo";
-
-const CREATE_SUBSCRIBER_MUTATION = gql`
-  mutation CreateSubscriber($name: String!, $email: String!) {
-    createSubscriber(data: { name: $name, email: $email }) {
-      id
-    }
-  }
-`;
+import { useCreateSubscriberMutation } from "../graphql/generated";
 
 export function Subscribe() {
   const navigate = useNavigate();
@@ -18,12 +11,12 @@ export function Subscribe() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const [createSubscriber, { loading, error }] = useMutation(CREATE_SUBSCRIBER_MUTATION);
+  const [createSubscriber, { loading, error }] = useCreateSubscriberMutation();
 
   async function handleSubscribe(event: FormEvent) {
     event.preventDefault();
 
-    console.log("teste")
+    console.log("teste");
 
     await createSubscriber({
       variables: {
@@ -31,7 +24,7 @@ export function Subscribe() {
         email,
       },
     });
-    
+
     console.log(error);
 
     navigate("/event");
